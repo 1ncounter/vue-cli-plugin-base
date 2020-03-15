@@ -1,0 +1,24 @@
+{
+  "useConfigFiles": true,
+  "cssPreprocessor": "sass",
+  "plugins": {
+    "@vue/cli-plugin-babel": {},
+    "@vue/cli-plugin-eslint": {
+      "config": "prettier",
+      "lintOn": ["save", "commit"]
+    },
+    "@vue/cli-plugin-router": {},
+    "@vue/cli-plugin-vuex": {},
+    "@vue/cli-plugin-typescript": {
+      "classComponent": false,
+      "useTsWithBabel": true,
+      "allowJs": true
+    }
+  },
+  "configs": {
+    "vue": {},
+    "postcss": {},
+    "eslintConfig": {},
+    "jest": {}
+  }
+}

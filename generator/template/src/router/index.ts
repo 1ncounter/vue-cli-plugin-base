@@ -18,7 +18,18 @@ const routes: Array<RouteConfig> = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
+  },
+  {
+    path: '/401',
+    name: 'Unauthorized',
+    component: () => import('@/views/errors/401.vue')
+  },
+  {
+    path: '/404',
+    name: 'Notfound',
+    component: () => import('@/views/errors/404.vue')
+  },
+  { path: '*', redirect: '/404' }
 ]
 
 const router = new VueRouter({

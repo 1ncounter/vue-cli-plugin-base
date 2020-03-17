@@ -1,21 +1,65 @@
-import Vue from 'vue';
-import axios, { AxiosRequestConfig } from 'axios';
+import axios, { AxiosRequestConfig, AxiosInstance } from 'axios';
 
 const CancelToken = axios.CancelToken;
 
-export const httpInstance = axios.create({
-  baseURL: ''
-});
+export function onReqFulfilledFunc(config: AxiosRequestConfig) {
+  return config;
+}
 
-httpInstance.interceptors.response.use(responseSuccessInterceptor, responseErrorInterceptor);
+export function onReqRejectedFunc(error: any) {
+  return Promise.reject(error);
+}
+
+export function onRespFulfilledFunc(response: any): any {
+  return response;
+}
+
+export function onRespRejectedFunc(error: any): Promise<never> {
+  return Promise.reject(error);
+}
+
+export const defaultConfig: AxiosRequestConfig = {
+  baseURL: '/api',
+  responseType: 'json'
+};
+
+/**
+ * 新建axios请求实例
+ */
+export function createHttpInstance(
+  options: AxiosRequestConfig,
+  onReqFulfilled = onReqFulfilledFunc,
+  onReqRejected = onReqRejectedFunc,
+  onRespFulfilled = onRespFulfilledFunc,
+  onRespRejected = onRespRejectedFunc
+) {
+  const httpInstance = axios.create(options);
+
+  httpInstance.interceptors.request.use(onReqFulfilled, onReqRejected);
+  httpInstance.interceptors.response.use(onRespFulfilled, onRespRejected);
+
+  return httpInstance;
+}
 
 export class BaseService {
+  httpInstance: AxiosInstance;
   cancel = () => {};
 
-  async http(url: string, data: any = {}, { prefix = '', ...options }: any = {}) {
+  constructor(
+    config: AxiosRequestConfig = defaultConfig,
+    createMethod: Function | AxiosInstance = createHttpInstance
+  ) {
+    if (typeof createMethod === 'function') {
+      this.httpInstance = createMethod({ ...defaultConfig, ...config });
+    } else {
+      this.httpInstance = createMethod;
+    }
+  }
+
+  async http(url: string, data: any = {}, options: AxiosRequestConfig = {}) {
     const _this = this;
-    const response = await httpInstance({
-      url: `${prefix}${url}`,
+    const response = await this.httpInstance({
+      url,
       data,
       cancelToken: new CancelToken(function executor(c) {
         _this.cancel = c;
@@ -29,12 +73,4 @@ export class BaseService {
   cancelRequest() {
     this.cancel();
   }
-}
-
-function responseSuccessInterceptor(response: any): any {
-  return response;
-}
-
-function responseErrorInterceptor(error: any): Promise<never> {
-  return Promise.reject(new Error('请求失败'));
 }

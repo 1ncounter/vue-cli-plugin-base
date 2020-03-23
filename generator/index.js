@@ -1,5 +1,7 @@
 module.exports = (api, { vueI18n }) => {
+  api.injectImports(api.entryFile, `import './svgs'`)
   api.injectImports(api.entryFile, `import '@/plugins'`)
+  api.injectImports(api.entryFile, `import '@/components'`)
   api.injectImports(api.entryFile, `import '@/common/directives'`)
 
   if (vueI18n) {
@@ -16,7 +18,8 @@ module.exports = (api, { vueI18n }) => {
 
   api.extendPackage({
     dependencies: {
-      'axios': '^0.19.0'
+      'axios': '^0.19.0',
+      'svg-sprite-loader': '^4.2.1'
     }
   })
 

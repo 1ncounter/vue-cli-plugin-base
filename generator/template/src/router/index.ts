@@ -1,3 +1,7 @@
+---
+replace: !!js/regexp /[^]*?/
+---
+
 <%_ if (options.hasRouter) { _%>
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';

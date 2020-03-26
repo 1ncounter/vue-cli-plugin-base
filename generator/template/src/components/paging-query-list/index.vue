@@ -19,8 +19,6 @@
         ></el-pagination>
       </div>
     </template>
-
-    <result v-if="result.status" :status="result.status" :title="result.title" />
   </div>
 </template>
 

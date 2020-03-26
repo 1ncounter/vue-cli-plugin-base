@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig, AxiosInstance } from 'axios';
+import axios, { AxiosRequestConfig, AxiosInstance, AxiosResponse, AxiosError } from 'axios';
 
 const CancelToken = axios.CancelToken;
 
@@ -6,15 +6,15 @@ export function onReqFulfilledFunc(config: AxiosRequestConfig) {
   return config;
 }
 
-export function onReqRejectedFunc(error: any) {
+export function onReqRejectedFunc(error: AxiosError): Promise<AxiosError> {
   return Promise.reject(error);
 }
 
-export function onRespFulfilledFunc(response: any): any {
+export function onRespFulfilledFunc(response: AxiosResponse<any>): AxiosResponse<any> {
   return response;
 }
 
-export function onRespRejectedFunc(error: any): Promise<never> {
+export function onRespRejectedFunc(error: AxiosError): Promise<AxiosError> {
   return Promise.reject(error);
 }
 

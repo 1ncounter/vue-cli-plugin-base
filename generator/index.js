@@ -1,3 +1,6 @@
+const fs = require('fs')
+const writeJson = require('../lib/write-json')
+
 module.exports = (api, { vueI18n }) => {
   api.injectImports(api.entryFile, `import './svgs'`)
   api.injectImports(api.entryFile, `import '@/plugins'`)
@@ -23,8 +26,23 @@ module.exports = (api, { vueI18n }) => {
     }
   })
 
+  if (api.hasPlugin('router')) {
+    fs.unlinkSync(api.resolve('src/router/index.ts'))
+  }
+
   api.render('./template', {
     vueI18n,
-    hasRouter: api.hasPlugin('router')
+    hasRouter: api.hasPlugin('router'),
+    hasEslint: api.hasPlugin('eslint')
   })
+
+  if (api.invoking) {
+    if (api.hasPlugin('typescript')) {
+      writeJson(api.resolve('tsconfig.json'), {
+        compilerOptions: {
+          "noImplicitAny": false
+        }
+      })
+    }
+  }
 }

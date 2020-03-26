@@ -4,7 +4,7 @@ module.exports = (api, options = {}) => {
     webpackConfig.module
       .rule('svg-sprite-loader')
       .test(/\.svg$/)
-      .include.add(resolve('src/assets/svgs')) // 处理svg目录
+      .include.add(require('path').join(__dirname, '.', 'src/assets/svgs')) // 处理svg目录
       .end()
       .use('svg-sprite-loader')
       .loader('svg-sprite-loader')

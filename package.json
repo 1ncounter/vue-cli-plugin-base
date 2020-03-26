@@ -1,6 +1,6 @@
 {
   "name": "@1ncounter/vue-cli-plugin-base",
-  "version": "1.0.2",
+  "version": "1.1.1",
   "description": "vue cli plugin to add base project structure",
   "author": "1ncounter",
   "main": "index.js",
@@ -10,5 +10,8 @@
     "cli",
     "plugin",
     "base"
-  ]
+  ],
+  "dependencies": {
+    "deepmerge": "^4.2.2"
+  }
 }

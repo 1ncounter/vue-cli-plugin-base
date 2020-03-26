@@ -1,13 +1,8 @@
----
-replace: !!js/regexp /[^]*?/
----
-
-<%_ if (options.hasRouter) { _%>
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
-import Home from '../views/Home.vue'
+import Home from '../views/Home.vue';
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
   {
@@ -34,18 +29,17 @@ const routes: Array<RouteConfig> = [
     component: () => import('@/views/errors/404.vue')
   },
   { path: '*', redirect: '/404' }
-]
+];
 
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
-})
+});
 
 router.beforeEach((to, from, next) => {
   // 路由鉴权校验
   next()
-})
+});
 
-export default router
-<%_ } _%>
+export default router;

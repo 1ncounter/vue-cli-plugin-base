@@ -29,6 +29,9 @@ module.exports = (api, { vueI18n }) => {
   if (api.hasPlugin('router')) {
     fs.unlinkSync(api.resolve('src/router/index.ts'))
   }
+  if (api.hasPlugin('eslint')) {
+    fs.unlinkSync(api.resolve('.eslintrc.js'))
+  }
 
   api.render('./template', {
     vueI18n,

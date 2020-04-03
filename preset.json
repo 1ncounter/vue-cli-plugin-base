@@ -13,7 +13,8 @@
       "classComponent": false,
       "useTsWithBabel": true,
       "allowJs": true
-    }
+    },
+    "@1ncounter/vue-cli-plugin-base": {}
   },
   "configs": {
     "vue": {},

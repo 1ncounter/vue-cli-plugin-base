@@ -2,19 +2,19 @@ const fs = require('fs')
 const writeJson = require('../lib/write-json')
 
 module.exports = (api, { vueI18n }) => {
-  api.injectImports(api.entryFile, `import './svgs'`)
-  api.injectImports(api.entryFile, `import '@/plugins'`)
-  api.injectImports(api.entryFile, `import '@/components'`)
-  api.injectImports(api.entryFile, `import '@/common/directives'`)
+  api.injectImports(api.entryFile, `import './svgs';`)
+  api.injectImports(api.entryFile, `import '@/plugins';`)
+  api.injectImports(api.entryFile, `import '@/components';`)
+  api.injectImports(api.entryFile, `import '@/common/directives';`)
 
   if (vueI18n) {
-    api.injectImports(api.entryFile, `import { i18n } from '@/locales'`)
+    api.injectImports(api.entryFile, `import { i18n } from '@/locales';`)
 
     api.injectRootOptions(api.entryFile, `i18n`)
 
     api.extendPackage({
       dependencies: {
-        'vue-i18n': '^8.3.2'
+        'vue-i18n': '^8.3.2',
       }
     })
   }
@@ -27,10 +27,13 @@ module.exports = (api, { vueI18n }) => {
   })
 
   if (api.hasPlugin('router')) {
-    fs.unlinkSync(api.resolve('src/router/index.ts'))
+    const routerFile = api.resolve('src/router/index.ts')
+    if (fs.existsSync(routerFile)) fs.unlinkSync(routerFile)
   }
+
   if (api.hasPlugin('eslint')) {
-    fs.unlinkSync(api.resolve('.eslintrc.js'))
+    const eslintConfig = api.resolve('.eslintrc.js')
+    if (fs.existsSync(eslintConfig)) fs.unlinkSync(eslintConfig)
   }
 
   api.render('./template', {

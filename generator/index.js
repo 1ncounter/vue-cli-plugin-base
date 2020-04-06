@@ -1,5 +1,4 @@
 const fs = require('fs')
-const writeJson = require('../lib/write-json')
 
 module.exports = (api, { vueI18n }) => {
   api.injectImports(api.entryFile, `import './svgs';`)
@@ -26,29 +25,23 @@ module.exports = (api, { vueI18n }) => {
     }
   })
 
-  if (api.hasPlugin('router')) {
-    const routerFile = api.resolve('src/router/index.ts')
-    if (fs.existsSync(routerFile)) fs.unlinkSync(routerFile)
-  }
-
-  if (api.hasPlugin('eslint')) {
-    const eslintConfig = api.resolve('.eslintrc.js')
-    if (fs.existsSync(eslintConfig)) fs.unlinkSync(eslintConfig)
-  }
-
   api.render('./template', {
     vueI18n,
-    hasRouter: api.hasPlugin('router'),
-    hasEslint: api.hasPlugin('eslint')
   })
 
-  if (api.invoking) {
-    if (api.hasPlugin('typescript')) {
-      writeJson(api.resolve('tsconfig.json'), {
-        compilerOptions: {
-          "noImplicitAny": false
-        }
-      })
-    }
-  }
+  api.afterAnyInvoke(() => {
+    api.postProcessFiles((files) => {
+      if (files['src/router/index.ts']) {
+        files['src/router/index.ts'] = fs.readFileSync(api.resolve('src/router/index.ts'), 'utf8')
+      }
+  
+      if (files['.eslintrc.js']) {
+        files['.eslintrc.js'] = fs.readFileSync(api.resolve('.eslintrc.js'), 'utf8')
+      }
+  
+      if (files['tsconfig.json']) {
+        files['tsconfig.json'] = fs.readFileSync(api.resolve('tsconfig.json'), 'utf8')
+      }
+    })
+  })
 }

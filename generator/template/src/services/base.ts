@@ -57,12 +57,11 @@ export class BaseService {
   }
 
   async http(url: string, data: any = {}, options: AxiosRequestConfig = {}) {
-    const _this = this;
     const response = await this.httpInstance({
       url,
       data,
-      cancelToken: new CancelToken(function executor(c) {
-        _this.cancel = c;
+      cancelToken: new CancelToken(c => {
+        this.cancel = c;
       }),
       ...options
     });

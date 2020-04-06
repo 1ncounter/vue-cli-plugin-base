@@ -1,4 +1,3 @@
-<%_ if (options.hasRouter) { _%>
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
 import Home from '../views/Home.vue';
@@ -44,4 +43,3 @@ router.beforeEach((to, from, next) => {
 });
 
 export default router;
-<%_ } _%>

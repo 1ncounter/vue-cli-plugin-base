@@ -20,7 +20,9 @@ module.exports = (api, { vueI18n }) => {
 
   api.extendPackage({
     dependencies: {
-      'axios': '^0.19.0',
+      'axios': '^0.19.0'
+    },
+    devDependencies: {
       'svg-sprite-loader': '^4.2.1'
     }
   })
